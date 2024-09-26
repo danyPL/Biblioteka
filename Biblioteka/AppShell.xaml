@@ -8,7 +8,7 @@
     Title="Biblioteka">
 
     <ShellContent
-        Title="Home"
+        Title="Biblioteka - Daniel Siwiec"
         ContentTemplate="{DataTemplate local:MainPage}"
         Route="MainPage" />
 

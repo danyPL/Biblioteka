@@ -1,7 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Biblioteka.MainPage">
+             xmlns:local="clr-namespace:Biblioteka.Model"
+             x:Class="Biblioteka.MainPage" BackgroundColor="#14213D">
 
     <Grid>
         <Grid.ColumnDefinitions>
@@ -13,55 +14,47 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <Border Stroke="#FCA311" StrokeThickness="1" Margin="16" Grid.RowSpan="3">
-            <Grid x:Name="Booklist" Padding="20" RowSpacing="10">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="300" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="*" />
-                </Grid.RowDefinitions>
-                <Label Text="Dostepne u nas książki" Grid.ColumnSpan="2" FontSize="25" Grid.Column="0" Grid.Row="0"/>
+        <!-- CollectionView do dynamicznego wyświetlania książek -->
+        <Border Stroke="#FCA311" StrokeThickness="1" StrokeShape="RoundRectangle 2" Padding="16" Margin="14"
+                Grid.Row="0" Grid.RowSpan="2">
+            <CollectionView x:Name="BookListView" Margin="16" SelectionMode="None">
+                <!-- Nagłówek dla CollectionView -->
+                <CollectionView.Header>
+                    <StackLayout Padding="10" Orientation="Horizontal">
+                        <Label FontAttributes="Bold" Text="ID" FontSize="20" WidthRequest="50" VerticalOptions="Center" />
+                        <Label FontAttributes="Bold" Text="Tytuł" FontSize="20" VerticalOptions="Center" WidthRequest="200" />
+                        <Label FontAttributes="Bold" Text="Ilość dostępnych sztuk" FontSize="20" VerticalOptions="Center" />
+                    </StackLayout>
+                </CollectionView.Header>
 
-                <Label Text="ID" FontSize="20" FontAttributes="Bold" Grid.Column="0" Grid.Row="1"/>
-                <Label Text="Tytuł" FontSize="20" FontAttributes="Bold" Grid.Column="1" Grid.Row="1"/>
-                <Label Text="Dostepna ilość" FontSize="20" FontAttributes="Bold" Grid.Column="2" Grid.Row="1"/>
-
-                <Label Text="1" x:Name="idP" FontSize="20" FontAttributes="Bold" Grid.Column="0" Grid.Row="2"/>
-                <Label Text="Potop - Henryk Sienkiewicz" FontSize="20" FontAttributes="Bold" Grid.Column="1" Grid.Row="2"/>
-                <Label Text="2" FontSize="20" x:Name="PotopIlosc" FontAttributes="Bold" Grid.Column="2" Grid.Row="2"/>
-
-                <Label Text="2"  x:Name="idT" FontSize="20" FontAttributes="Bold" Grid.Column="0" Grid.Row="3"/>
-                <Label Text="Pan Tadeusz - Adam Mickiewicz" FontSize="20" FontAttributes="Bold" Grid.Column="1" Grid.Row="3"/>
-                <Label Text="3"  x:Name="TadeuszIlosc" FontSize="20" FontAttributes="Bold" Grid.Column="2" Grid.Row="3"/>
-
-                <Label Text="3"  x:Name="idZ" FontSize="20" FontAttributes="Bold" Grid.Column="0" Grid.Row="4"/>
-                <Label Text="Zbrodnia i Kara - Piotr Dostojewski" FontSize="20" FontAttributes="Bold" Grid.Column="1" Grid.Row="4"/>
-                <Label Text="3" FontSize="20"  x:Name="ZbrodniaIlosc" FontAttributes="Bold" Grid.Column="2" Grid.Row="4"/>
-
-            </Grid>
-            
+                <!-- Szablon elementów CollectionView -->
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <StackLayout Padding="10" Orientation="Horizontal">
+                            <Label Text="{Binding Id}" FontSize="20" WidthRequest="50" VerticalOptions="Center" />
+                            <Label Text="{Binding Name}" FontSize="20" VerticalOptions="Center" WidthRequest="200" />
+                            <Label Text="{Binding Capacity}" FontSize="20" VerticalOptions="Center" />
+                        </StackLayout>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
         </Border>
 
-        <Border Stroke="#FCA311" StrokeThickness="1" Margin="14" Grid.Column="1">
+        <!-- Panel do wypożyczania książek -->
+        <Border Stroke="#FCA311" StrokeThickness="1" Margin="14" Grid.Column="1" Grid.Row="0">
             <VerticalStackLayout Spacing="5">
-                <Label Text="Wypożycz książke" FontSize="Large" />
-                <Entry x:Name="wypozyc" />
-                <Button Text="Wypożycz" WidthRequest="150" HorizontalOptions="End"  />
+                <Label Text="Wypożycz książkę" FontSize="Large" />
+                <Entry x:Name="wypozyc" Placeholder="Podaj ID książki" />
+                <Button Text="Wypożycz" WidthRequest="150" HorizontalOptions="End" Clicked="Wypozycz_Clicked"/>
             </VerticalStackLayout>
         </Border>
 
+        <!-- Panel do oddawania książek -->
         <Border Stroke="#FCA311" StrokeThickness="1" Margin="14" Grid.Column="1" Grid.Row="1">
             <VerticalStackLayout Spacing="5">
-                <Label Text="Oddaj książke" FontSize="Large"/>
-                <Entry x:Name="oddaj" />
-                <Button Text="Oddaj" WidthRequest="150" HorizontalOptions="End" />
+                <Label Text="Oddaj książkę" FontSize="Large"/>
+                <Entry x:Name="oddaj" Placeholder="Podaj ID książki" />
+                <Button Text="Oddaj" WidthRequest="150" HorizontalOptions="End" Clicked="Oddaj_Clicked"/>
             </VerticalStackLayout>
         </Border>
     </Grid>
